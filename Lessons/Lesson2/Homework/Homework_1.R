@@ -29,6 +29,6 @@ dt_KPI_raw %>%
 # Your Explanation about analysis:
 1) Očistil som dáta.
 2) Zoskupil som ich podľa rokov.
-3) Porovnal som ich podľa Underwriting result.
+3) Porovnal som ich podľa Underwriting Result.
 Výsledok: Najhorší rok vyšiel 2015.
 Dôvod: Rok 2015 má najmenšiu hodnotu UWR.
