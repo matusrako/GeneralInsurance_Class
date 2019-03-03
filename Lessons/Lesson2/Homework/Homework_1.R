@@ -3,32 +3,32 @@
 # __Commit__ it to your repository into `Lessons/Lesson2/Homework`.
 
 ## Code
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
+library(dplyr)
+library(ggplot2)
+
+dt_KPI_raw <- read.csv("data/lesson2_KPI.csv")
+
+dt_KPI_raw %>% 
+  mutate(Premium = ifelse(Premium < 0, 0, Premium))
+
+dt_KPI_raw %>%  mutate(UWR = Premium - Expenses - Losses) %>% 
+  group_by(Year) %>% 
+  summarize(UWR = sum(UWR, na.rm = TRUE)) %>% 
+  arrange(UWR)
+
+dt_KPI_raw %>% 
+  mutate(UWR = Premium - Expenses - Losses) %>% 
+  group_by(Year) %>% 
+  summarize(UWR = sum(UWR, na.rm = TRUE)) %>% 
+  ggplot(aes(x = reorder(Year, UWR), y = UWR)) + 
+  geom_col()
 
 
 
 
 # Your Explanation about analysis:
-# 
-# 
-# 
+1) Očistil som dáta.
+2) Zoskupil som ich podľa rokov.
+3) Porovnal som ich podľa Underwriting result.
+Výsledok: Najhorší rok vyšiel 2015.
+Dôvod: Rok 2015 má najmenšiu hodnotu UWR.
