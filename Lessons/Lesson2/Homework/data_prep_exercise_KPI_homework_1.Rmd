@@ -250,7 +250,7 @@ dt_KPI_raw %>%
   group_by(Unit) %>% 
   summarize(UWR = sum(UWR, na.rm = TRUE)) %>% 
   arrange(desc(UWR))
-# Celkom dobre z hľadiska UWR vyzerá byť Unit7
+# Celkom dobre z hľadiska UWR vyzerá byť Unit7.
 ```
 
 ##### Which Business of previous Unit looks bad in terms of UWR? 
@@ -260,12 +260,12 @@ dt_KPI_raw %>%
   group_by(Business) %>% 
   summarize(UWR.Plan. = sum(UWR.Plan., na.rm = TRUE)) %>% 
   arrange(UWR.Plan.)
-# Zle z hľadiska UWR z Unit7 je business Accidents (má zápornú hodnotu UWR).
+# Zlý z hľadiska UWR z Unit7 je business Accidents (má zápornú hodnotu UWR).
 ```
 
 Reflection again - write a short comment to your notes in repository on what do you think is the best and the worst Unit performer based on what you have learned recently. Feel free to do more data exploration.
 
-Celkom dobre z hľadiska UWR vyzerá byť Unit7, pričom zlá je business Accidents z dôvodu zápornej hodnoty UWR.
+# Celkom dobre z hľadiska UWR vyzerá byť Unit7, pričom zlá je business Accidents z dôvodu zápornej hodnoty UWR.
 
 --------------------------------------------------------------------------------
 
