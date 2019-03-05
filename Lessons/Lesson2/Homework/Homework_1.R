@@ -21,7 +21,7 @@ dt_KPI_raw %>%
   summarize(UWR = sum(UWR, na.rm = TRUE)) %>% 
   arrange(UWR)
 
-# Vyfiltrovanie podľa roku:
+# Zoskupenie podľa roku:
 dt_KPI_raw %>%  
   mutate(UWR = Premium - Expenses - Losses) %>% 
   filter(Unit == "Unit7") %>% 
