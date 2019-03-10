@@ -5,7 +5,7 @@ dt_KPI_raw <- read.csv("./Data/lesson2_KPI.csv")
 dt_KPI_raw <- dt_KPI_raw %>% filter_all(all_vars(!is.na(.)))
 
 ui <- fluidPage(
-  titlePanel("Homework_3 - Matus Rako"),
+  titlePanel("Homework_2 - Matus Rako"),
   selectInput("select", 
               label = h3("Scatter Plot"), 
               choices = list("Region", "Unit", "Segment", "Business", "Year")),
