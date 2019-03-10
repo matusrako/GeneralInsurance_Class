@@ -1,0 +1,4 @@
+1. Vzťah medzi Premium a Expenses je najstrmší v regióne Belandia, pretože v ňom sú podniky vyžadujúce osobitnú starostlivosť (t. j. vyššie náklady na menší zisk).
+2. Portfólio Unit7 obsahuje najrizikovejšie podniky, preto Premium aj Expenses majú preň najvyššie hodnoty.
+3. Malé segmenty sú rizikovejšie ako veľké segmenty, preto pre Premium a Expenses majú vyššie hodnoty.
+4. Poistenie domácností ovplyvňuje množstvo faktorov, preto sú nákladnejšie v pomere k zisku ako iné odvetvia a teda vzťah medzi Premium a Expenses je najstrmší.
