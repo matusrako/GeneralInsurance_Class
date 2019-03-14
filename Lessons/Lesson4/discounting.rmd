@@ -80,7 +80,7 @@ _Now try to predict what happens with the linse using the chain ladder technique
 
 Your solution
 ```{r}
-
+predict(chainladder(GenIns))
 
 
 
@@ -95,7 +95,7 @@ It also shows 2 different claim types for each. Can you describe how different t
 Hint: Consider the length of tail, volatility, average sizes...
 Hint2: There are 2 types of data - paid and case. Start using Paid...
 
-_YOUR SOLUTION_
+summary(dt_PaidCase)
 understand the data => run some simple overviews
 
 create a variable => filter data and covert to triangle. then convert to cummulative to use chainladder
@@ -103,27 +103,28 @@ create a variable => filter data and covert to triangle. then convert to cummula
 _STEP 1: Take paid data for House business and Small claim size_
 
 ```{r}
-Paid_HH_sml <- dt_PaidCase %>% filter(...) 
+Paid_HH_sml <- dt_PaidCase %>% filter(Business == "House" & ClaimSize == "Small" & dataset_type == "PAID") 
 ```
 
 _STEP 2: Now convert the standard table into a triangle_
 Hint: %>% as.triangle(...)
 
 ```{r}
-
+Paid_HH_sml_triangle <- Paid_HH_sml %>% as.triangle(Paid_HH_sml, origin = "ay", dev = "dy", value = "SumOfamount")
 ```
 
 _STEP 3: Now start plotting things to see more information_
 
 ```{r}
-
+plot(Paid_HH_sml_triangle)
+plot(predict(chainladder(Paid_HH_sml_triangle)))
 ```
 
 _STEP 4: And get the aging factors and some other stat's out to see more details_
 Hint: ata(...)
 
 ```{r}
-
+ata(Paid_HH_sml_triangle)
 ```
 
 _Now repeat for all types of buiness and sizes of claims. Compare the findings..._
