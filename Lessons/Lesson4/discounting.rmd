@@ -81,9 +81,6 @@ _Now try to predict what happens with the linse using the chain ladder technique
 Your solution
 ```{r}
 predict(chainladder(GenIns))
-
-
-
 ```
 
 At the end this is all about age-to-age factors. There are many methods that calculate them, but at the end once you get them you know, how much more the claim will be in x years.
@@ -130,14 +127,67 @@ ata(Paid_HH_sml_triangle)
 _Now repeat for all types of buiness and sizes of claims. Compare the findings..._
 
 ```{r}
+## House & Large & PAID:
+Paid_HH_sml <- dt_PaidCase %>% filter(Business == "House" & ClaimSize == "Large" & dataset_type == "PAID") 
+Paid_HH_sml_triangle <- Paid_HH_sml %>% as.triangle(Paid_HH_sml, origin = "ay", dev = "dy", value = "SumOfamount")
+Paid_HH_sml_triangle <- triangle(Paid_HH_sml_triangle[,10], Paid_HH_sml_triangle[,9], Paid_HH_sml_triangle[,1], Paid_HH_sml_triangle[,2], Paid_HH_sml_triangle[,3], Paid_HH_sml_triangle[,4], Paid_HH_sml_triangle[,5], Paid_HH_sml_triangle[,6], Paid_HH_sml_triangle[,7], Paid_HH_sml_triangle[,8])
+plot(Paid_HH_sml_triangle)
+plot(predict(chainladder(Paid_HH_sml_triangle)))
+ata(Paid_HH_sml_triangle)
 
+## 3rd Party & Large & PAID:
+Paid_HH_sml <- dt_PaidCase %>% filter(Business == "3rd Party" & ClaimSize == "Large" & dataset_type == "PAID") 
+Paid_HH_sml_triangle <- Paid_HH_sml %>% as.triangle(Paid_HH_sml, origin = "ay", dev = "dy", value = "SumOfamount")
+Paid_HH_sml_triangle <- triangle(Paid_HH_sml_triangle[,10], Paid_HH_sml_triangle[,9], Paid_HH_sml_triangle[,1], Paid_HH_sml_triangle[,2], Paid_HH_sml_triangle[,3], Paid_HH_sml_triangle[,4], Paid_HH_sml_triangle[,5], Paid_HH_sml_triangle[,6], Paid_HH_sml_triangle[,7], Paid_HH_sml_triangle[,8])
+plot(Paid_HH_sml_triangle)
+plot(predict(chainladder(Paid_HH_sml_triangle)))
+ata(Paid_HH_sml_triangle)
+# Veľmi výrazne vysoké straty sú v poslednom roku 2016, čo potrvdzuje aj predpoveď.
+
+## 3rd Party & Small & PAID:
+Paid_HH_sml <- dt_PaidCase %>% filter(Business == "3rd Party" & ClaimSize == "Small")
+Paid_HH_sml_triangle <- Paid_HH_sml %>% as.triangle(Paid_HH_sml, origin = "ay", dev = "dy", value = "SumOfamount")
+Paid_HH_sml_triangle <- triangle(Paid_HH_sml_triangle[,10], Paid_HH_sml_triangle[,9], Paid_HH_sml_triangle[,1], Paid_HH_sml_triangle[,2], Paid_HH_sml_triangle[,3], Paid_HH_sml_triangle[,4], Paid_HH_sml_triangle[,5], Paid_HH_sml_triangle[,6], Paid_HH_sml_triangle[,7], Paid_HH_sml_triangle[,8])
+plot(Paid_HH_sml_triangle)
+plot(predict(chainladder(Paid_HH_sml_triangle)))
+ata(Paid_HH_sml_triangle)
 ```
+# V prípade House vidím, že po cca 4-5 rokov začínajú straty dramticky klesať, kým v prípade 3rd Party nie.
+# Medzi veľkými a malými škodami som nezaznamenal dramatické rozdiely.
 
 _If you are now comforatble with what this does, try doing the same, but using additional information: The Case data!_
 Hint: Sum Paid and Case together to come up with the final claims estimates (the Incurred claims)
 
 ```{r}
+## House & Small:
+Incur_HH_sml <- dt_PaidCase %>% filter(Business == "House" & ClaimSize == "Small") 
+Incur_HH_sml_triangle <- Incur_HH_sml %>% as.triangle(Incur_HH_sml, origin = "ay", dev = "dy", value = "SumOfamount")
+Incur_HH_sml_triangle <- triangle(Incur_HH_sml_triangle[,10], Incur_HH_sml_triangle[,9], Incur_HH_sml_triangle[,1], Incur_HH_sml_triangle[,2], Incur_HH_sml_triangle[,3], Incur_HH_sml_triangle[,4], Incur_HH_sml_triangle[,5], Incur_HH_sml_triangle[,6], Incur_HH_sml_triangle[,7], Incur_HH_sml_triangle[,8])
+plot(Incur_HH_sml_triangle)
+plot(predict(chainladder(IncurHH_sml_triangle)))
+ata(Incur_HH_sml_triangle)
 
+## House & Large:
+Incur_HH_sml <- dt_PaidCase %>% filter(Business == "House" & ClaimSize == "Large") 
+Incur_HH_sml_triangle <- Incur_HH_sml %>% as.triangle(Incur_HH_sml, origin = "ay", dev = "dy", value = "SumOfamount")
+Incur_HH_sml_triangle <- triangle(Incur_HH_sml_triangle[,10], Incur_HH_sml_triangle[,9], Incur_HH_sml_triangle[,1], Incur_HH_sml_triangle[,2], Incur_HH_sml_triangle[,3], Incur_HH_sml_triangle[,4], Incur_HH_sml_triangle[,5], Incur_HH_sml_triangle[,6], Incur_HH_sml_triangle[,7], Incur_HH_sml_triangle[,8])
+plot(Incur_HH_sml_triangle)
+plot(predict(chainladder(IncurHH_sml_triangle)))
+ata(Incur_HH_sml_triangle)
+
+## 3rd Party & Large:
+Incur_HH_sml <- dt_PaidCase %>% filter(Business == "3rd Party" & ClaimSize == "Large") 
+Incur_HH_sml_triangle <- Incur_HH_sml %>% as.triangle(Incur_HH_sml, origin = "ay", dev = "dy", value = "SumOfamount")
+Incur_HH_sml_triangle <- triangle(Incur_HH_sml_triangle[,10], Incur_HH_sml_triangle[,9], Incur_HH_sml_triangle[,1], Incur_HH_sml_triangle[,2], Incur_HH_sml_triangle[,3], Incur_HH_sml_triangle[,4], Incur_HH_sml_triangle[,5], Incur_HH_sml_triangle[,6], Incur_HH_sml_triangle[,7], Incur_HH_sml_triangle[,8])
+plot(Incur_HH_sml_triangle)
+
+## 3rd Party & Small:
+Incur_HH_sml <- dt_PaidCase %>% filter(Business == "3rd Party" & ClaimSize == "Small") 
+Incur_HH_sml_triangle <- Incur_HH_sml %>% as.triangle(Incur_HH_sml, origin = "ay", dev = "dy", value = "SumOfamount")
+Incur_HH_sml_triangle <- triangle(Incur_HH_sml_triangle[,10], Incur_HH_sml_triangle[,9], Incur_HH_sml_triangle[,1], Incur_HH_sml_triangle[,2], Incur_HH_sml_triangle[,3], Incur_HH_sml_triangle[,4], Incur_HH_sml_triangle[,5], Incur_HH_sml_triangle[,6], Incur_HH_sml_triangle[,7], Incur_HH_sml_triangle[,8])
+plot(Incur_HH_sml_triangle)
+plot(predict(chainladder(IncurHH_sml_triangle)))
+ata(Incur_HH_sml_triangle)
 ```
 
 
@@ -146,12 +196,13 @@ In insurance this means how fast is the data fully developed. The age-to-age fac
 
 So hopefully by this time you know how the losses were calculated for you to use in previous class...
 
+# Cca 4-5 rokov trvá strata Houses, kým pre 3rd Party to trvá dlhšie. Dôvod: Ak sa niečo stane s domom, je to väčšinou rýchlo zaplatené bez ďalších nákladov do budúcna, kým v prípade nehôd áut bývajú častejšie aj zdravotné škody (liečenie, práceneschopnosť), množstvo drobnejších vecí zasahujúcich do bežného chodu poškodeného, čo časovo výraznejšie predĺžuje vznik ďalších nákladov.
 
 #### Exercise 3
 There are a couple of different types of business in the data from previous lesson. 
 What do you think, how long are the average delays in payments? Set up a table, that will 
 _show your assumptions and commit it to your git repository._
-
+summary(dt_KPI)
 
 ### Discounting  losses
 It is very unlikely, that we incur the whole loss on the *very first day*. This allows the insurance company to *invest* the premium received and earn som interest on it. So one way of thinking about our previous example would be to think about *the future value of money* collected at the time of the claim. In reality we need to know the answers now, so *discounting the losses* is more practical then earning interest on expenses.
