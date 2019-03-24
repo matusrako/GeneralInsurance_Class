@@ -14,18 +14,18 @@ dt_pol_w_claims <- dt_pol_w_claims %>%
 
 # 1. Use One-way analysis to find out 2 more features like Veh_type2, which can be usefull in the GLM model and might have potiantial influence on our target.
 
-# Budem analyzova premenné D_age a Construct_year, keïe oboje majú potenciálny vplyv. 
-# Od veku poistenca sa odráa napríklad skúsenosti, reakènı èas, ... 
-# Od roku vıroby vozidla zas jeho technickı stav, hodnota, ...
+# Budem analyzovaÅ¥ premennÃ© D_age a Construct_year, keÄÅ¾e oboje majÃº potenciÃ¡lny vplyv. 
+# Od veku poistenca sa odrÃ¡Å¾a naprÃ­klad skÃºsenosti, reakÄnÃ½ Äas, ... 
+# Od roku vÃ½roby vozidla zas jeho technickÃ½ stav, hodnota, ...
 
 # D_age:
 library(ggplot2)
 dt_pol_w_claims %>% 
   ggplot(aes(y = Burning_Cost, x = D_age)) + 
   geom_jitter()
-# Najväèšie hodnoty Burning_Cost sú u ¾udí vo veku 43-46 rokov. 
-# Dôvod: Kríza stredného veku, alebo pouívanie vozidla detmi poistenca.
-# Zaujímavosti: Viacero vozidiel majú poistenci nad 100 rokov. eby chybné dáta?
+# NajvÃ¤ÄÅ¡ie hodnoty Burning_Cost sÃº u Ä¾udÃ­ vo veku 43-46 rokov. 
+# DÃ´vod: KrÃ­za strednÃ©ho veku, alebo pouÅ¾Ã­vanie vozidla detmi poistenca.
+# ZaujÃ­mavosti: Viacero vozidiel majÃº poistenci nad 100 rokov. Å½eby chybnÃ© dÃ¡ta?
 
 dt_pol_w_claims %>% 
   filter(Burning_Cost != 0) %>% 
@@ -34,26 +34,26 @@ dt_pol_w_claims %>%
             BC_median = median(Burning_Cost, na.rm = TRUE),
             cnt = n()) %>% 
   arrange(desc(BC_avg))
-# Najvyšší priemer pre Burning_Cost majú ¾udia vo veku 60 rokov. 
-# Dôvod: Je to zrejme spôsobené outlierermi viï predošlí graf.
-# Najvyšší medián pre Burning_Cost majú ¾udia vo veku 69 rokov - aj keï z grafu to vyzeralo, e najrizikovejší budú vo veku 43-46 rokov. 
-# Dôvod: Vo veku 43-46 rokov je ove¾a viac dát a teda aj ve¾a nízkych hodnôt, èo spôsobuje niší medián ako v roèníkoch s malım poètom dát.
+# NajvyÅ¡Å¡Ã­ priemer pre Burning_Cost majÃº Ä¾udia vo veku 60 rokov. 
+# DÃ´vod: Je to zrejme spÃ´sobenÃ© outlierermi viÄ predoÅ¡lÃ­ graf.
+# NajvyÅ¡Å¡Ã­ mediÃ¡n pre Burning_Cost majÃº Ä¾udia vo veku 69 rokov - aj keÄ z grafu to vyzeralo, Å¾e najrizikovejÅ¡Ã­ budÃº vo veku 43-46 rokov. 
+# DÃ´vod: Vo veku 43-46 rokov je oveÄ¾a viac dÃ¡t a teda aj veÄ¾a nÃ­zkych hodnÃ´t, Äo spÃ´sobuje niÅ¾Å¡Ã­ mediÃ¡n ako v roÄnÃ­koch s malÃ½m poÄtom dÃ¡t.
 
 dt_pol_w_claims[, 8] <- as.factor(dt_pol_w_claims[, 8])
 dt_pol_w_claims %>% 
   ggplot(aes(y = Burning_Cost, x = D_age)) + 
   geom_boxplot() +
   ylim(0, 100)
-# Z grafu vidno, e je tam pri niektorıch roèníkoch ve¾a outliererov, obzvláš v roèníkoch s malım poètom dát, ktorí môu kazi našu predikciu.
+# Z grafu vidno, Å¾e je tam pri niektorÃ½ch roÄnÃ­koch veÄ¾a outliererov, obzvlÃ¡Å¡Å¥ v roÄnÃ­koch s malÃ½m poÄtom dÃ¡t, ktorÃ­ mÃ´Å¾u kaziÅ¥ naÅ¡u predikciu.
 
 # Construct_year:
 library(ggplot2)
 dt_pol_w_claims %>% 
   ggplot(aes(y = Burning_Cost, x = Construct_year)) + 
   geom_jitter()
-# Najväèšie hodnoty Burning_Cost sú u vozidiel vyrobenıch v roku 2005 a vyššom. 
-# Dôvod: Vozidlá èasom strácajú svoju hodnotu, èím je odškodné u starších vozidiel menšie ako u novších vozidiel. 
-# Zaujímavosti: V rokoch pred rokom 1995 je málo dát. Zrejme u také staré vozidlá nie sú pouívané, a ešte menej poisované.
+# NajvÃ¤ÄÅ¡ie hodnoty Burning_Cost sÃº u vozidiel vyrobenÃ½ch v roku 2005 a vyÅ¡Å¡om. 
+# DÃ´vod: VozidlÃ¡ Äasom strÃ¡cajÃº svoju hodnotu, ÄÃ­m je odÅ¡kodnÃ© u starÅ¡Ã­ch vozidiel menÅ¡ie ako u novÅ¡Ã­ch vozidiel. 
+# ZaujÃ­mavosti: V rokoch pred rokom 1995 je mÃ¡lo dÃ¡t. Zrejme uÅ¾ takÃ© starÃ© vozidlÃ¡ nie sÃº pouÅ¾Ã­vanÃ©, a eÅ¡te menej poisÅ¥ovanÃ©.
 
 dt_pol_w_claims %>% 
   filter(Burning_Cost != 0) %>% 
@@ -62,19 +62,19 @@ dt_pol_w_claims %>%
             BC_median = median(Burning_Cost, na.rm = TRUE),
             cnt = n()) %>% 
   arrange(desc(BC_avg))
-# Najvyšší priemer pre Burning_Cost majú vozidlá vyrobené v roku 1997. 
-# Dôvod: Málo dát - iba dve vozidlá, èo skres¾uje vısledky.
-# Najvyšší priemer pre Burning_Cost pre roèník s relevantnım poètom dát (viac ako 5) je 2014.
-# Najvyšší medián pre Burning_Cost majú opä vozidlá vyrobené v roku 1997.  
-# Najvyšší medián pre Burning_Cost pre roèník s relevantnım poètom dát (viac ako 5) je 2004.
+# NajvyÅ¡Å¡Ã­ priemer pre Burning_Cost majÃº vozidlÃ¡ vyrobenÃ© v roku 1997. 
+# DÃ´vod: MÃ¡lo dÃ¡t - iba dve vozidlÃ¡, Äo skresÄ¾uje vÃ½sledky.
+# NajvyÅ¡Å¡Ã­ priemer pre Burning_Cost pre roÄnÃ­k s relevantnÃ½m poÄtom dÃ¡t (viac ako 5) je 2014.
+# NajvyÅ¡Å¡Ã­ mediÃ¡n pre Burning_Cost majÃº opÃ¤Å¥ vozidlÃ¡ vyrobenÃ© v roku 1997.  
+# NajvyÅ¡Å¡Ã­ mediÃ¡n pre Burning_Cost pre roÄnÃ­k s relevantnÃ½m poÄtom dÃ¡t (viac ako 5) je 2004.
 
 dt_pol_w_claims[, 17] <- as.factor(dt_pol_w_claims[, 17])
 dt_pol_w_claims %>% 
   ggplot(aes(y = Burning_Cost, x = Construct_year)) + 
   geom_boxplot() +
   ylim(0, 100)
-# Z grafu vidno, e aj tu je pri niektorıch roèníkoch ve¾a outliererov, ktorí môu kazi našu predikciu.
-# Obzvláš zavádzajúce môu by roky 2003-2006, kde je málo dát a outliereri tam lietajú veåmi vysoko.
+# Z grafu vidno, Å¾e aj tu je pri niektorÃ½ch roÄnÃ­koch veÄ¾a outliererov, ktorÃ­ mÃ´Å¾u kaziÅ¥ naÅ¡u predikciu.
+# ObzvlÃ¡Å¡Å¥ zavÃ¡dzajÃºce mÃ´Å¾u byÅ¥ roky 2003-2006, kde je mÃ¡lo dÃ¡t a outliereri tam lietajÃº veÄºmi vysoko.
 
 # 2. Create simple GLM model with features you have found in previous exercise. Is the model predictive? Are you satisfied with your model? Use your knowledge about GLM theory to evaluate model, make a suggestion what could be improved and what would be your next steps. We will focus on your comments rather than code here.
 
@@ -83,7 +83,7 @@ GLMmodel <- glm(data = dt_pol_w_claims %>% filter(Burning_Cost != 0, Burning_Cos
                 formula = Burning_Cost ~ D_age + Construct_year,
                 family = Gamma())
 summary(GLMmodel)
-# Oboje premenné sú štatisticky vıznamné. Model je teda prediktívny.
-# Pri Construct_year1999 sú NA hodnoty, èo by sa patrilo nejako do¾adi.
-# Lepší model by bol zahàòajúci viacero faktorov, ako aj typ vozidla, èi typ zákazník, keïe aj tieto fakroty môu ma vıznamnı vplyv a vylepši tak našu predikciu.
-# Ïalší postup by bol vyskúša viacero modelov (rôzny poèty a kombinácie faktorov) a potom na základe AIC alebo BIC kritéria vybra ten najvhodnejší a s ním robi ïalšie analızy.
+# Oboje premennÃ© sÃº Å¡tatisticky vÃ½znamnÃ©. Model je teda prediktÃ­vny.
+# Pri Construct_year1999 sÃº NA hodnoty, Äo by sa patrilo nejako doÄ¾adiÅ¥. TaktieÅ¾ nejako vyhodiÅ¥ aspoÅˆ zopÃ¡r veÄ¾mi vzdialenÃ½ch outliererov by zlepÅ¡ilo predikciu.
+# LepÅ¡Ã­ model by bol zahÅ•ÅˆajÃºci viacero faktorov, ako aj typ vozidla, Äi typ zÃ¡kaznÃ­ka, keÄÅ¾e aj tieto fakroty mÃ´Å¾u maÅ¥ vÃ½znamnÃ½ vplyv a vylepÅ¡iÅ¥ tak naÅ¡u predikciu.
+# ÄalÅ¡Ã­ postup by bol vyskÃºÅ¡aÅ¥ viacero modelov (rÃ´zny poÄty a kombinÃ¡cie faktorov) a potom na zÃ¡klade AIC alebo BIC kritÃ©ria vybraÅ¥ ten najvhodnejÅ¡Ã­ a s nÃ­m robiÅ¥ ÄalÅ¡ie analÃ½zy.
