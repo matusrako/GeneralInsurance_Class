@@ -19,6 +19,7 @@ GLMmodel1 <- glm(data = train,
 MSE(predict(GLMmodel1, train, type = "response"), train$Burning_Cost) # 198.7277
 
 # 2. Model s pridanou novou premennou - Veh_type2:
+# Dôvod: Premenná Veh_type2, teda typ vozidla, môže mať významný vplyv na škodové udalosti a preto model zahŕňajúci aj túto premennú by mohol byť lepší.
 GLMmodel2 <- glm(data = train,
               formula = Burning_Cost ~ D_age + Construct_year + Veh_type2,
               family = Gamma())
@@ -26,6 +27,7 @@ MSE(predict(GLMmodel2, train, type = "response"), train$Burning_Cost) # 193.9859
 # Hodnota MSE o trochu klesla, model je teda trochu robustnejší.
 
 # 3. Capping Strategy:
+# Dôvod: V predošlej domácej úlohe sme videli, že či už pri veku vodiča, alebo roku výroby vozidla sú skupiny s malým počtom dát, ktoré môže negatívne ovplyvniť trend. Touto metódou ich identifikujeme a pokúsime sa model vylepšiť.
 source("./Lessons/Lesson6/Support/emb_chart.R")
 # Podľa D_age
 emblem_graph(
@@ -55,13 +57,14 @@ MSE(predict(GLMmodel3, train, type = "response"), train$Burning_Cost) # 194.0015
 # Hodnota MSE sa veľmi mierne zvýšila, teda možno skonštatovať, že zgrupovanie nám nepomohlo model vylepšiť.
 
 # 4. Category Grouping:
+# Dôvod: Premenná Veh_type2 na rozdiel od predošlích dvoch premenných obsahuje "kategórie" a nie časové rozdlenie. Pomocou tejto metódy nájdeme, ktoré kategórie by bolo vhodné spojiť a tie spojíme.
 emblem_graph(
   dt.frm = train %>% cbind(data.frame(pred = predict(GLMmodel2, train, type = "response"))),
   x_var = "Veh_type2",
   target = "Burning_Cost",
   prediction = "pred" )
-# Z grafu vidíme, že u vozidiel typu MOTORBIKE a TRUCK, sú pomerne veľké výkyvy dôsledku malého počtu dát, čo negatívne ovplyvňuje trend.
-# Zgrupime preto tieto skupiny.
+# Z grafu vidíme, že u vozidiel typu CAR a PICKUP je podobný skutočný priemer.
+# Zgrupime preto tieto kategórie.
 train <- train %>% mutate(Veh_type2 = ifelse(as.character(Veh_type2) == 'PICKUP' | as.character(Veh_type2) == 'CAR', 'CAR & PICKUP', as.character(Veh_type2)))
 
 GLMmodel4 <- glm(data = train,
