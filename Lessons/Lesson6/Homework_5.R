@@ -12,7 +12,7 @@ MSE <- function(prediction, actual)
   return(sum((prediction-actual)^2, na.rm = TRUE)/length(prediction))
 }
 
-# 1. Model z predošlej úlohy - treningová vzorka:
+# 1. Model z predoÅ¡lej Ãºlohy - treningovÃ¡ vzorka:
 GLMmodel1 <- glm(data = train,
                 formula = Burning_Cost ~ D_age + Construct_year,
                 family = Gamma())
@@ -23,36 +23,36 @@ GLMmodel2 <- glm(data = train,
               formula = Burning_Cost ~ D_age + Construct_year + Veh_type2,
               family = Gamma())
 MSE(predict(GLMmodel2, train, type = "response"), train$Burning_Cost) # 193.9859
-# Hodnota MSE o trochu klesla, model je teda trochu robustnejší.
+# Hodnota MSE o trochu klesla, model je teda trochu robustnejÅ¡Ã­.
 
 # 3. Capping Strategy:
 source("./Lessons/Lesson6/Support/emb_chart.R")
-# Pod¾a D_age
+# PodÄ¾a D_age
 emblem_graph(
   dt.frm = train %>% cbind(data.frame(pred = predict(GLMmodel2, train, type = "response"))),
   x_var = "D_age",
   target = "Burning_Cost",
   prediction = "pred" )
-# Z grafu vidíme, e u vodièoch mladších ako 33, resp. starších ako 56, sú pomerne ve¾ké vıkyvy dôsledku malého poètu dát, èo negatívne ovplyvòuje trend.
+# Z grafu vidÃ­me, Å¾e u vodiÄoch mladÅ¡Ã­ch ako 33, resp. starÅ¡Ã­ch ako 56, sÃº pomerne veÄ¾kÃ© vÃ½kyvy dÃ´sledku malÃ©ho poÄtu dÃ¡t, Äo negatÃ­vne ovplyvÅˆuje trend.
 # Zgrupime preto tieto skupiny. 
 train <- train %>% mutate(D_age = ifelse(D_age <= 32, 32, D_age))
 train <- train %>% mutate(D_age = ifelse(D_age >= 57, 57, D_age)) 
 
-# Pod¾a Construct_year
+# PodÄ¾a Construct_year
 emblem_graph(
   dt.frm = train %>% cbind(data.frame(pred = predict(GLMmodel2, train, type = "response"))),
   x_var = "Construct_year",
   target = "Burning_Cost",
   prediction = "pred" )
-# Z grafu vidíme, e u vozidiel vyrobenıch pred rokom 2006, sú pomerne ve¾ké vıkyvy dôsledku malého poètu dát, èo negatívne ovplyvòuje trend.
-# Zgrupime preto túto skupinu. 
+# Z grafu vidÃ­me, Å¾e u vozidiel vyrobenÃ½ch pred rokom 2006, sÃº pomerne veÄ¾kÃ© vÃ½kyvy dÃ´sledku malÃ©ho poÄtu dÃ¡t, Äo negatÃ­vne ovplyvÅˆuje trend.
+# Zgrupime preto tÃºto skupinu. 
 train <- train %>% mutate(Construct_year = ifelse(Construct_year <= 2005, 2005, Construct_year))
 
 GLMmodel3 <- glm(data = train,
                  formula = Burning_Cost ~ D_age + Construct_year + Veh_type2,
                  family = Gamma())
 MSE(predict(GLMmodel3, train, type = "response"), train$Burning_Cost) # 194.0015
-# Hodnota MSE sa ve¾mi mierne zvıšila, teda mono skonštatova, e zgrupovanie nám nepomohlo model vylepši.
+# Hodnota MSE sa veÄ¾mi mierne zvÃ½Å¡ila, teda moÅ¾no skonÅ¡tatovaÅ¥, Å¾e zgrupovanie nÃ¡m nepomohlo model vylepÅ¡iÅ¥.
 
 # 4. Category Grouping:
 emblem_graph(
@@ -60,7 +60,7 @@ emblem_graph(
   x_var = "Veh_type2",
   target = "Burning_Cost",
   prediction = "pred" )
-# Z grafu vidíme, e u vozidiel typu MOTORBIKE a TRUCK, sú pomerne ve¾ké vıkyvy dôsledku malého poètu dát, èo negatívne ovplyvòuje trend.
+# Z grafu vidÃ­me, Å¾e u vozidiel typu MOTORBIKE a TRUCK, sÃº pomerne veÄ¾kÃ© vÃ½kyvy dÃ´sledku malÃ©ho poÄtu dÃ¡t, Äo negatÃ­vne ovplyvÅˆuje trend.
 # Zgrupime preto tieto skupiny.
 train <- train %>% mutate(Veh_type2 = ifelse(as.character(Veh_type2) == 'PICKUP' | as.character(Veh_type2) == 'CAR', 'CAR & PICKUP', as.character(Veh_type2)))
 
@@ -68,6 +68,6 @@ GLMmodel4 <- glm(data = train,
                  formula = Burning_Cost ~ D_age + Construct_year + Veh_type2,
                  family = Gamma())
 MSE(predict(GLMmodel4, train, type = "response"), train$Burning_Cost) # 194.4265
-# Hodnota MSE sa nám zvıšila ešte vıraznejšie ako v prípade Capping Strategy, teda ani kategoriálne zgrupovanie nám nepomohlo.
+# Hodnota MSE sa nÃ¡m zvÃ½Å¡ila eÅ¡te vÃ½raznejÅ¡ie ako v prÃ­pade Capping Strategy, teda ani kategoriÃ¡lne zgrupovanie nÃ¡m nepomohlo.
 
-# Záver: Za najlepší model je GLMmodel2 s tromi premennımi bez zgrupovania dát.
+# ZÃ¡ver: Za najlepÅ¡Ã­ model je GLMmodel2 s tromi premennÃ½mi bez zgrupovania dÃ¡t.
